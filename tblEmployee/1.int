@@ -1,0 +1,753 @@
+ROUTINE SEM.tblEmployee.1 [Type=INT,Generated]
+ ;SEM.tblEmployee.1
+ ;Generated for class SEM.tblEmployee.  Do NOT edit. 12/08/2025 01:13:30PM
+ ;;554B554C;SEM.tblEmployee
+ ;
+SQLUPPER(v,l) { quit $zu(28,v,7,$g(l,32767)) }
+ALPHAUP(v,r) { quit $zu(28,v,6) }
+STRING(v,l) { quit $zu(28,v,9,$g(l,32767)) }
+SQLSTRING(v,l) { quit $zu(28,v,8,$g(l,32767)) }
+UPPER(v) { quit $zu(28,v,5) }
+MVR(v) { quit $zu(28,v,2) }
+TRUNCATE(v,l) { quit $e(v,1,$g(l,3641144)) }
+%BuildDeferredIndices(lockFlag=0,journalFlag=1) methodimpl {
+	return $$Error^%apiOBJ(5758,"%Storage.Persistent::%BuildDeferredIndices") }
+%BuildIndices(pIndexList="",pAutoPurge=1,pLockFlag=0,pJournalFlag="",pStartID="",pEndID="",pIgnoreIndexList="") methodimpl {
+	If (pIndexList="")||(($listlength(pIndexList)=1)&&($listget(pIndexList,1)="")) { Quit 1 }
+	Quit $$Error^%apiOBJ(5066,$classname()_"::"_$ListToString(pIndexList)) }
+%BuildIndicesSegment(pStartID,pEndID,pIndexHandle=0,pLockFlag=1,pFirstRange=0,pJob="") methodimpl {
+	QUIT 1 }
+%CheckConstraints(pID,pConstraintList="",pCheckDisabled=0,pErrorInfo) methodimpl {
+	if (''..%OnDetermineClass($select(pID="":"",1:$listbuild(pID_"")),.tMSTC)) && (tMSTC '= $classname()) { quit $classmethod(tMSTC,"%CheckConstraints",pID,pConstraintList) } else { quit 1 } }
+%CheckConstraintsForExtent(pConstraintList="",pCheckDisabled=0,pErrorLog) [ SQLCODE,tID ] methodimpl { New %ROWCOUNT,%ROWID,%msg,SQLCODE,tID 
+	kill pErrorLog set tStatusAll = 1, pErrorLog = 0 if '$listvalid(pConstraintList) { set pConstraintList = $listfromstring(pConstraintList) }
+	 ;---&sql(declare ext cursor for select %ID into :tID FROM %NOPARALLEL SEM.tblEmployee)
+ 	 ;--- ** SQL PUBLIC Variables: %ROWCOUNT, %ROWID, %msg, SQLCODE, tID
+	 
+	 ;---&sql(open ext)
+	if $g(%ext0203)'="" { s SQLCODE=-101 } else { try { s %ext0203="%sqlcq."_$tr($namespace,"%_-$@:/\[]^ .","pudssssssssss")_$case($zu(115,2),0:".u",1:".x",3:".v",:"."_$zu(115,2))_"EOx4CIyK2RWzZ2kjgNeIPjbpNii",%ext0203=$classmethod(%ext0203,"%New") } catch { if ($ze'["<CLASS DOES NOT EXIST>"&&($ze'["<NOROUTINE>")||($ze'[%ext0203)),$ze'["<ZSQLU>" { throw } } if '$isobject(%ext0203) { s %ext0203=$$%0dsqlA() } }
+	if SQLCODE '< 0 {
+		for {
+			 ;---&sql(fetch ext)
+ 			 ;--- ** SQL PUBLIC Variables: %ROWCOUNT, %ROWID, %msg, SQLCODE
+			if $isobject($g(%ext0203))'=1 { s SQLCODE=-102 } else { do %ext0203.FET() }
+			if SQLCODE { if SQLCODE=100 { quit } elseif SQLCODE<0 { set tStatusAll = $select(+tStatusAll:$$Error^%apiOBJ(5521,SQLCODE,$Get(%msg)),1:$$AppendStatus^%occSystem(tStatusAll,$$Error^%apiOBJ(5521,SQLCODE,$Get(%msg)))) quit } }
+			set tStatus = ..%CheckConstraints(tID,pConstraintList,pCheckDisabled,.tErrorInfo)
+			if ('tStatus) { set tStatusAll = $select(+tStatusAll:tStatus,1:$$AppendStatus^%occSystem(tStatusAll,tStatus)) set:pErrorLog<1000 pErrorLog = pErrorLog + 1, pErrorLog(pErrorLog) = tErrorInfo _ $Listbuild(tStatus) }
+		}
+		 ;---&sql(close ext)
+		if '$isobject($get(%ext0203)) { set SQLCODE=-102 } else { set SQLCODE=0 kill %ext0203 }
+	}
+	quit tStatusAll }
+ q
+%0dsqlA()	n %xxsql,%xxoref
+	s %xxsql("S",1)="DECLARE ext CURSOR FOR SELECT %ID INTO :tID FROM %NOPARALLEL SEM . tblEmployee"
+	s %xxsql("M","%occSqlfuncinc")=$c(1),%xxsql("M","ALLOCGVEC")=$c(1),%xxsql("M","CACHENAMES")="",%xxsql("M","FORKNETDMN")=$c(1)
+	s %xxsql("M","HASHLOCK")=$c(1),%xxsql("M","NETNEWHASH")=$c(1),%xxsql("M","USEDIRCACHE")=$c(1),%xxsql("M","USEGCNT")=2,%xxsql("M","USEGOFF")=$c(1)
+	s %xxsql("M","USELOST")=$c(1),%xxsql("M","ZVERSION")=$c(1),%xxsql("I","%occSqlfunc")="",%xxsql("I","%sySystem")="",%xxsql("I","%systemInclude")=""
+	s %xxsql("NS")="SEM",%xxsql("PToolsCTI")=$LB(,"-1:0:0::0:1")
+	s %xxoref=$$BuildQuery^%SYS.SQLSRV(.%xxsql,$lb("Logical","","","SEM",0,"",),",0,ext,","SEM.tblEmployee.CLS",1)
+	i $g(SQLCODE) { s tID="" }
+	q %xxoref
+%ComposeOid(id) methodimpl {
+	set tCLASSNAME = $listget($g(^SEM.tblEmployeeD(id)),1)
+	if tCLASSNAME="" { quit $select(id="":"",1:$listbuild(id_"","SEM.tblEmployee")) }
+	set tClass=$piece(tCLASSNAME,$extract(tCLASSNAME),*-1)
+	set:tClass'["." tClass="User."_tClass
+	quit $select(id="":"",1:$listbuild(id_"",tClass)) }
+%DeleteData(id,concurrency) methodimpl {
+	Quit:id="" $$Error^%apiOBJ(5812)
+	set $Ztrap="DeleteDataERR" set lockok=0,sc=""
+	If concurrency {
+		Lock +(^SEM.tblEmployeeD(id)#"E"):$zu(115,4)
+		Set lockok=$s('$t:0,1:$case($SYSTEM.Lock.ReturnCode(),0:1,2:2,4:2,:0))
+		Set:lockok=2&&($tlevel) %0CacheLock($classname(),"E")=1
+		If 'lockok {
+			Quit $$Error^%apiOBJ(5803,$classname())
+		}
+	}
+	If ($Data(^SEM.tblEmployeeD(id))) {
+		If $data(^oddEXTR($classname())) {
+			Set fc=""
+			For {
+				Set fc=$order(^rINDEXEXT("F",$classname(),"%1","f",fc))
+				Quit:fc=""
+				Set fk=""
+				For {
+					Set fk=$order(^rINDEXEXT("F",$classname(),"%1","f",fc,fk))
+					Quit:fk=""
+					Set sc=$classmethod(fc,fk_"Delete",id)
+					If ('sc) { Goto DeleteDataEXIT }
+				}
+			}
+			Set fc=""
+			For {
+				Set fc=$order(^rINDEXEXT("F",$classname(),"IDKEY","f",fc))
+				Quit:fc=""
+				Set fk=""
+				For {
+					Set fk=$order(^rINDEXEXT("F",$classname(),"IDKEY","f",fc,fk))
+					Quit:fk=""
+					Set sc=$classmethod(fc,fk_"Delete",id)
+					If ('sc) { Goto DeleteDataEXIT }
+				}
+			}
+		}
+		Kill ^SEM.tblEmployeeD(id)
+		Set sc=1
+	}
+	Else { Set sc=$$Error^%apiOBJ(5810,$classname(),id) }
+DeleteDataEXIT
+	If concurrency,lockok {
+		Lock -(^SEM.tblEmployeeD(id)#"E")
+	}
+DeleteDataRET	Set $Ztrap = ""
+	QUIT sc
+DeleteDataERR	Set $Ztrap = "DeleteDataRET"
+	Set sc = $$Error^%apiOBJ(5002,$ZE)
+	Goto DeleteDataEXIT }
+%Exists(oid="") methodimpl {
+	Quit ..%ExistsId($listget(oid)) }
+%ExistsId(id) methodimpl {
+	Try { set tExists = $s(id="":0,$d(^SEM.tblEmployeeD(id)):1,1:0) } catch tException { set tExists = 0 if '(tException.%IsA("%Exception.SystemException")) { throw tException } elseif tException.Name'="<SUBSCRIPT>" { ZT $ZE } } quit tExists }
+%FileIndices(id,pIndexHandle=0,pVectorBuffer) methodimpl {
+	Quit 1 }
+%InsertBatch(objects,concurrency=0,useTransactions=0) methodimpl {
+	try {
+		set numerrs=0,errs="",cnt=0,ptr=0
+		while $listnext(objects,ptr,data) {
+			set cnt=cnt+1
+			set lock=0
+			if (useTransactions) tstart
+			set id=$i(^SEM.tblEmployeeD)
+			try {
+				set tInnerException = ""
+				;
+				if concurrency { lock +(^SEM.tblEmployeeD(id)#"E"):$zu(115,4) set lock=$s('$t:0,1:$case($SYSTEM.Lock.ReturnCode(),0:1,2:2,4:2,:0)) set:lock=2&&($tlevel) %0CacheLock($classname(),"E")=1 if 'lock { Throw ##class(%Exception.StatusException).ThrowIfInterrupt($$Error^%apiOBJ(5803,$classname())) } }
+				set ^SEM.tblEmployeeD(id)=data
+				if (useTransactions) { tcommit }
+			}
+			catch tInnerException {
+				set newerr=$lb(cnt,tInnerException.AsStatus())
+				if '($length(errs)+$length(newerr)>32767) { set numerrs=numerrs+1, errs=errs_newerr }
+				if (useTransactions) && ($Tlevel) trollback
+			}
+			if lock lock -(^SEM.tblEmployeeD(id)#"E")
+		}
+	}
+	catch tException {
+		set newerr=$lb($g(cnt),tException.AsStatus())
+		if '($length(errs)+$length(newerr)>32767) { set numerrs=numerrs+1, errs=errs_newerr }
+	}
+	QUIT ($lb(numerrs))_errs }
+%KillExtentData(killstreams=0) methodimpl
+	Set $sequence(^SEM.tblEmployeeD)=""
+	If killstreams Set $sequence(^SEM.tblEmployeeS)="" Kill ^SEM.tblEmployeeS
+	Kill ^SEM.tblEmployeeD
+	Quit 1
+%LoadData(id) methodimpl {
+	New %s1
+	set $ZTrap="CatchError",locked=0,userze=$ze,$ze=""
+	If i%%Concurrency=4 {
+		Lock +(^SEM.tblEmployeeD(id)#"E"):$zu(115,4)
+		if '$t do init s i%%Concurrency=0 s:$ze="" $ze=userze return $$Error^%apiOBJ(5803,$classname())
+	} ElseIf i%%Concurrency>1 {
+		Lock +(^SEM.tblEmployeeD(id)#"SE"):$zu(115,4)
+		if '$t do init s i%%Concurrency=0 s:$ze="" $ze=userze return $$Error^%apiOBJ(5804,$classname())
+		set locked = 1
+	}
+	If $d(^SEM.tblEmployeeD(id),%s1)#2 {
+		If i%%Concurrency=2 { Lock -(^SEM.tblEmployeeD(id)#"SIE") }
+		S i%ID=$lg(%s1,2),i%EmployeeId=$lg(%s1,3),i%Name=$lg(%s1,4),i%KanaName=$lg(%s1,5),i%Sex=$lg(%s1,6),i%PostCode=$lg(%s1,7),i%Address=$lg(%s1,8),i%PhoneNumber=$lg(%s1,9),i%Department=$lg(%s1,10),i%RetireFlg=$lg(%s1,11),i%deleteFlg=$lg(%s1,12),i%upDateTime=$lg(%s1,13)
+		s:$ze="" $ze=userze
+		Quit 1
+	} Else {
+		If i%%Concurrency=2 { Lock -(^SEM.tblEmployeeD(id)#"SIE") }
+		do init
+		set sc = $$Error^%apiOBJ(5809,$classname(),id) goto CatchError
+	}
+CatchError	set $ZTrap = "" if $ZE'="" { s sc = $$Error^%apiOBJ(5002,$ZE) }
+	If ($get(locked))&&(i%%Concurrency<3) { Lock -(^SEM.tblEmployeeD(id)#"SIE") }
+	if '('sc) { set sc=$$Error^%apiOBJ(5809,$classname(),id) }
+	s:$ze="" $ze=userze
+	return sc
+init	Set i%Address="",i%Department="",i%EmployeeId="",i%ID="",i%KanaName="",i%Name="",i%PhoneNumber="",i%PostCode="",i%RetireFlg="",i%Sex="",i%deleteFlg="",i%upDateTime=""
+	quit }
+%LoadDataFromMemory(id,objstate,obj) methodimpl {
+	New %s1
+	If $d(objstate(id)) {
+		Set %s1=$g(objstate(id))
+		S i%ID=$lg(%s1,2),i%EmployeeId=$lg(%s1,3),i%Name=$lg(%s1,4),i%KanaName=$lg(%s1,5),i%Sex=$lg(%s1,6),i%PostCode=$lg(%s1,7),i%Address=$lg(%s1,8),i%PhoneNumber=$lg(%s1,9),i%Department=$lg(%s1,10),i%RetireFlg=$lg(%s1,11),i%deleteFlg=$lg(%s1,12),i%upDateTime=$lg(%s1,13)
+		Quit 1
+	} Else {
+		set i%Address="",i%Department="",i%EmployeeId="",i%ID="",i%KanaName="",i%Name="",i%PhoneNumber="",i%PostCode="",i%RetireFlg="",i%Sex="",i%deleteFlg="",i%upDateTime=""
+		Quit $$Error^%apiOBJ(5809,$classname(),id)
+	} }
+%LockExtent(shared=0) methodimpl {
+	If shared {
+		Lock +(^SEM.tblEmployeeD#"S"):$zu(115,4) Quit:$t 1
+		Quit $$Error^%apiOBJ(5799,$classname())
+	}
+	Lock +(^SEM.tblEmployeeD):$zu(115,4) Quit:$t 1
+	Quit $$Error^%apiOBJ(5798,$classname()) }
+%LockId(id,shared=0,timeout) methodimpl { s:'($d(timeout)#2) timeout=$zu(115,4)
+	If id="" { Quit $$Error^%apiOBJ(5812) }
+	Set sc=1
+	If 'shared {
+		Lock +(^SEM.tblEmployeeD(id)#"E"):timeout Quit:$t 1
+		Quit $$Error^%apiOBJ(5803,id_":"_$classname())
+	}
+	Lock +(^SEM.tblEmployeeD(id)#"SE"):timeout Quit:$t 1
+	Quit $$Error^%apiOBJ(5804,id_":"_$classname()) }
+%NormalizeObject() methodimpl {
+	If '$system.CLS.GetModified() Quit 1
+	If m%Address Set:i%Address'="" i%Address=(..AddressNormalize(i%Address))
+	If m%Department Set:i%Department'="" i%Department=(..DepartmentNormalize(i%Department))
+	If m%EmployeeId Set:i%EmployeeId'="" i%EmployeeId=(..EmployeeIdNormalize(i%EmployeeId))
+	If m%ID Set:i%ID'="" i%ID=(..IDNormalize(i%ID))
+	If m%KanaName Set:i%KanaName'="" i%KanaName=(..KanaNameNormalize(i%KanaName))
+	If m%Name Set:i%Name'="" i%Name=(..NameNormalize(i%Name))
+	If m%PhoneNumber Set:i%PhoneNumber'="" i%PhoneNumber=(..PhoneNumberNormalize(i%PhoneNumber))
+	If m%PostCode Set:i%PostCode'="" i%PostCode=(..PostCodeNormalize(i%PostCode))
+	If m%RetireFlg Set:i%RetireFlg'="" i%RetireFlg=(..RetireFlgNormalize(i%RetireFlg))
+	If m%Sex Set:i%Sex'="" i%Sex=(..SexNormalize(i%Sex))
+	If m%deleteFlg Set:i%deleteFlg'="" i%deleteFlg=(..deleteFlgNormalize(i%deleteFlg))
+	If m%upDateTime Set:i%upDateTime'="" i%upDateTime=(..upDateTimeNormalize(i%upDateTime))
+	Quit 1 }
+%OnDetermineClass(oid,class) methodimpl {
+	Set id=$listget($get(oid))
+	RETURN:id="" $$Error^%apiOBJ(5812)
+	set idclass=$lg($get(^SEM.tblEmployeeD(id)),1)
+	if idclass="" { set class="SEM.tblEmployee" RETURN 1 }
+	set class=$piece(idclass,"~",*-1)
+	set:class'["." class="User."_class
+	RETURN 1 }
+%PhysicalAddress(id,paddr) methodimpl
+	if $Get(id)="" Quit $$Error^%apiOBJ(5813,$classname())
+	if (id="") { quit $$Error^%apiOBJ(5832,$classname(),id) }
+	s paddr(1)=$lb($Name(^SEM.tblEmployeeD(id)),$classname(),"IDKEY","listnode",id)
+	s paddr=1
+	Quit 1
+%PurgeIndices(idxlist="",lockExtent=0,pIgnoreIndexList="") methodimpl {
+	If idxlist="" { Quit 1 }
+	Quit $$Error^%apiOBJ(5066,$classname()_"::"_$ListToString(idxlist)) }
+%SQLAcquireLock(%rowid,s=0,unlockref=0) methodimpl
+	new %d,gotlock
+	set %d(1)=%rowid set s=$e("E",'unlockref)_$e("S",s)
+	lock +^SEM.tblEmployeeD(%d(1))#s:$zu(115,4) set gotlock=$t
+	if gotlock,'unlockref { set:$case($SYSTEM.Lock.ReturnCode(),2:1,4:1,:0)&&($tlevel) %0CacheLock("SEM.tblEmployee","E")=1 }
+	set:gotlock&&unlockref unlockref=unlockref+1,unlockref(unlockref)=$lb($name(^SEM.tblEmployeeD(%d(1))),"SEM.tblEmployee",s_"D")
+	QUIT gotlock
+%SQLAcquireTableLock(s=0,SQLCODE,to="") methodimpl
+	set s=$e("S",s) set:to="" to=$zu(115,4) lock +^SEM.tblEmployeeD#s:to QUIT:$t 1 set SQLCODE=-110 if s="S" { set %msg=$$FormatMessage^%occMessages(,"%SQL.Filer","SQLFiler35",,"SEM"_"."_"tblEmployee") } else { set %msg=$$FormatMessage^%occMessages(,"%SQL.Filer","SQLFiler36",,"SEM"_"."_"tblEmployee") } QUIT 0
+	Return
+%SQLBuildIndices(pIndices="",pLockFlag=0,pStartID="",pEndID="",pIgnoreIndexList="") methodimpl
+	RETURN ..%BuildIndices(pIndices,,pLockFlag,,pStartID,pEndID,pIgnoreIndexList)
+%SQLBuildPurgeIndexForRow(pIndices="",pActions="BP",pLockRow=1,%d,%e,pIgnoreIndexList="") methodimpl
+	// Purge and build index nodes for a single row using given values, return Status Code
+	new sn,tSC,tLock set tSC=1,pActions=$zcvt(pActions,"U")
+	try {
+		if $g(%d(1))="" { set tSC=$select(+tSC:$$Error^%apiOBJ(5521,-108,"RowID value must be specified in %d(1) when calling %SQLBuildPurgeIndexForRow for table 'SEM.tblEmployee'"),1:$$AppendStatus^%occSystem(tSC,$$Error^%apiOBJ(5521,-108,"RowID value must be specified in %d(1) when calling %SQLBuildPurgeIndexForRow for table 'SEM.tblEmployee'"))) RETURN tSC }
+		if pLockRow { if '..%SQLAcquireLock(%d(1)) { set tSC=$select(+tSC:$$Error^%apiOBJ(5521,-114,"Unable to lock row in table 'SEM.tblEmployee' with %ID = '"_%d(1)_"'"),1:$$AppendStatus^%occSystem(tSC,$$Error^%apiOBJ(5521,-114,"Unable to lock row in table 'SEM.tblEmployee' with %ID = '"_%d(1)_"'"))) RETURN tSC  } else { set tLock=1 }}
+		if pLockRow { do ..%SQLReleaseLock(%d(1),0,0) set tLock=0 }
+	}
+	catch {
+		if $g(tLock) { do ..%SQLReleaseLock(%d(1),0,0) }
+		set tSC=$select(+tSC:$$Error^%apiOBJ(5594,$ze),1:$$AppendStatus^%occSystem(tSC,$$Error^%apiOBJ(5594,$ze)))
+	}
+	QUIT tSC
+%SQLCheckUniqueIndices(pIndices,pOK) methodimpl
+	new d,g,n,o set d=0
+	set pOK=1 QUIT
+%SQLCopyIcolIntoName() methodimpl
+	if %oper="DELETE" {
+		set:$d(%d(1)) %f("ID1")=%d(1)
+		QUIT
+	}
+	set:$d(%d(1)) %f("ID1")=%d(1) set:$a(%e,2)&&$d(%d(2)) %f("Address")=%d(2) set:$a(%e,3)&&$d(%d(3)) %f("Department")=%d(3) set:$a(%e,4)&&$d(%d(4)) %f("EmployeeId")=%d(4) set:$a(%e,5)&&$d(%d(5)) %f("ID")=%d(5) set:$a(%e,6)&&$d(%d(6)) %f("KanaName")=%d(6) set:$a(%e,7)&&$d(%d(7)) %f("Name")=%d(7) set:$a(%e,8)&&$d(%d(8)) %f("PhoneNumber")=%d(8) set:$a(%e,9)&&$d(%d(9)) %f("PostCode")=%d(9) set:$a(%e,10)&&$d(%d(10)) %f("RetireFlg")=%d(10) set:$a(%e,11)&&$d(%d(11)) %f("Sex")=%d(11) set:$a(%e,12)&&$d(%d(12)) %f("deleteFlg")=%d(12) set:$a(%e,13)&&$d(%d(13)) %f("upDateTime")=%d(13) set:$a(%e,14)&&$d(%d(14)) %f("x__classname")=%d(14)
+	QUIT
+%SQLDefineiDjVars(%d,subs,master) methodimpl
+	QUIT
+%SQLDelete(%rowid,%check,%tstart=1,%mv=0,%polymorphic=0,%bufferedColumns=0) methodimpl
+	// SQL DELETE method for table SEM.tblEmployee
+	new bva,ce,%d,dc,%e,%ele,%itm,%key,%l,%nc,omcall,%oper,%pos,%s,sn,sqlcode,subs set %oper="DELETE",sqlcode=0,%ROWID=%rowid,%d(1)=%rowid,%e(1)=%rowid,%l=$c(0)
+	if '$d(%0CacheSQLRA) { new %0CacheSQLRA set omcall=1 }
+	if '$a(%check,2) {
+		new %ls lock +^SEM.tblEmployeeD(%d(1))#"E":$zu(115,4) set %ls=$s('$t:0,1:$case($SYSTEM.Lock.ReturnCode(),0:1,4:2,2:2,1:3,:""))
+		set:%ls=2 $e(%check,2)=$c(1) set:%ls=2&&($tlevel) %0CacheLock("SEM.tblEmployee","E")=1 set:$case(%ls,1:1,2:1,:0) $e(%l)=$c(1)
+		if '%ls||(%ls=3) { set SQLCODE=-110,%msg=$$FormatMessage^%occMessages(,"%SQL.Filer",$s('%ls:"SQLFiler40",1:"SQLFiler55"),,%oper,"SEM"_"."_"tblEmployee",$g(%d(1))) RETURN  }
+	}
+	if %tstart { TSTART:($zu(115,1)=1)||('$TLEVEL&&($zu(115,1)=2))  }
+	set $zt="ERRORDelete"
+	do ..%SQLGetOld(%rowid,.%d,.%e,.sqlcode) if sqlcode { set SQLCODE=-106,%msg=$$FormatMessage^%occMessages(,"%SQL.Filer","SQLFiler58",,"SEM"_"."_"tblEmployee",%rowid) do ..%SQLEExit() QUIT  }
+	if %e(14)'="" { set sn=$p(%e(14),$e(%e(14)),$l(%e(14),$e(%e(14)))-1) if "SEM.tblEmployee"'=sn { new %f do ..%SQLCopyIcolIntoName() do $classmethod(sn,"%SQLDelete",%rowid,%check,%tstart,%mv,1) QUIT  }}
+	if '$a(%check),'$zu(115,7) do  if sqlcode set SQLCODE=sqlcode do ..%SQLEExit() QUIT  
+	. new %fk,%k,%p,%st,%t,%z set %k="",%p("%1")="%d(1),",%p("IDKEY")="%d(1),"
+	. for  quit:sqlcode<0  set %k=$o(^rINDEXEXT("F","SEM.tblEmployee",%k)) quit:%k=""  set %t="" for  set %t=$o(^rINDEXEXT("F","SEM.tblEmployee",%k,"f",%t)) quit:%t=""  set %st=(%t="SEM.tblEmployee") set %fk="" for  set %fk=$o(^rINDEXEXT("F","SEM.tblEmployee",%k,"f",%t,%fk)) quit:%fk=""  x "set %z=$classmethod(%t,%fk_""SQLFKeyRefAction"",%st,%k,$a(%check,2),"_%p(%k)_")" if %z set sqlcode=-124 quit  
+	set ce="" for  { set ce=$order(^oddSQL("SEM","tblEmployee","DC",ce)) quit:ce=""   do $classmethod(ce,"%SQLDeleteChildren",%d(1),%check,.sqlcode) quit:sqlcode<0  } if sqlcode<0 { set SQLCODE=sqlcode do ..%SQLEExit() QUIT } // Delete any children
+	if '$a(%check,3) {
+	}
+	k ^SEM.tblEmployeeD(%d(1))
+	do ..%SQLUnlock() TCOMMIT:%tstart&&($zu(115,1)=1)
+	set SQLCODE=0 kill:$g(omcall) %0CacheSQLRA
+	QUIT
+ERRORDelete	set $zt="",SQLCODE=-415,%msg=$s($g(%msg)'="":%msg_" -- ",1:"")_$$FormatMessage^%occMessages(,"%SQL.Filer","SQLFiler51",,%oper,"SEM"_"."_"tblEmployee",$ze) if $ze["<FRAMESTACK>" { set %msg=$$FormatMessage^%occMessages(,"%SQL.Filer","SQLFiler52",,$ze,%oper,"SEM"_"."_"tblEmployee") do ##Class(%SYS.System).WriteToConsoleLog(%msg) if ($zu(67,10,$j)=1)||($zu(67,10,$j)=3) { write !,%msg h 3 } HALT  } do ..%SQLEExit() QUIT
+	Return
+%SQLDeleteTempStreams() methodimpl
+	// Delete all temporary streams
+	QUIT
+%SQLEExit() methodimpl
+	do ..%SQLUnlock() 
+	if %tstart,$zu(115,1)=1,$TLEVEL { set %tstart=0 TROLLBACK 1 } kill:$g(omcall) %0CacheSQLRA QUIT  
+	Return
+%SQLExists(pLockOnly=0,pUnlockRef,%pVal...) methodimpl
+	// SQL Foreign Key validation entry point for Key %1.  Called by FKeys that reference this Key to see if the row is defined
+	if pLockOnly>=0 { new id set id=%pVal(1) }
+	if pLockOnly>=0 { if '..%SQLGetLock(id,1,.pUnlockRef) { set sqlcode=-114,%msg=$$FormatMessage^%occMessages(,"%SQL.Filer","SQLFiler39",,"SEM"_"."_"tblEmployee"_":"_"%1") QUIT 0 } }
+	if pLockOnly<1 {
+		new qv set qv=$d(^SEM.tblEmployeeD(%pVal(1))) QUIT:pLockOnly=-1 qv
+		do:'$g(pUnlockRef) ..%SQLReleaseLock(id,1) quit qv
+	}
+	else { do:'$g(pUnlockRef) ..%SQLReleaseLock(id,1) QUIT 1 }
+	Return
+%SQLGetLock(pRowId,pShared=0,pUnlockRef) methodimpl
+	QUIT ..%SQLAcquireLock(pRowId,pShared,.pUnlockRef)
+%SQLGetOld(%rowid,%d,%e,sqlcode) methodimpl
+	new s set %d(1)=%rowid,s="" if '$d(^SEM.tblEmployeeD(%d(1)),s) { set sqlcode=100 quit  }
+	 S %e(14)=$lg(s)
+	QUIT
+%SQLGetOldAll() methodimpl
+	new s set %d(1)=%rowid,s="" if '$d(^SEM.tblEmployeeD(%d(1)),s) { set sqlcode=100 quit  }
+	 S %e(14)=$lg(s),%e(5)=$lg(s,2),%e(4)=$lg(s,3),%e(7)=$lg(s,4),%e(6)=$lg(s,5),%e(11)=$lg(s,6),%e(9)=$lg(s,7),%e(2)=$lg(s,8),%e(8)=$lg(s,9),%e(3)=$lg(s,10),%e(10)=$lg(s,11),%e(12)=$lg(s,12),%e(13)=$lg(s,13)
+	QUIT
+%SQLInsert(%d,%check,%inssel,%vco,%tstart=1,%mv=0,%bufferedColumns=0) methodimpl
+	// SQL INSERT method for table SEM.tblEmployee
+	new bva,%ele,%itm,%key,%f,%l,%n,%nc,%oper,%pos,%s,sqlcode,sn,subs,icol set %oper="INSERT",sqlcode=0,%l=$c(0,0,0)
+	if $a(%check,7) { new %diu merge %diu=%d }
+	if $d(%d(1)),'$zu(115,11) { if %d(1)'="" { set SQLCODE=-111,%msg=$$FormatMessage^%occMessages(,"%SQL.Filer","SQLFiler6",,"ID1","SEM"_"."_"tblEmployee") RETURN ""  } kill %d(1) } 
+	if '$a(%check),'..%SQLValidateFields(.sqlcode) { set SQLCODE=sqlcode RETURN "" }
+	do:'$a(%check,8) ..%SQLNormalizeFields()
+	if %tstart { TSTART:($zu(115,1)=1)||('$TLEVEL&&($zu(115,1)=2))  } set $zt="ERRORInsert"
+	if '$a(%check) {
+		do {
+			if $g(%vco)'="" { d @%vco quit:sqlcode<0  }
+			do:$g(%d(4))="" ..%SQLnBuild():'$d(%n),..%SQLMissing($lg(%n,5)) do:$g(%d(5))="" ..%SQLnBuild():'$d(%n),..%SQLMissing($lg(%n,6)) do:$g(%d(7))="" ..%SQLnBuild():'$d(%n),..%SQLMissing($lg(%n,8)) do:$g(%d(10))="" ..%SQLnBuild():'$d(%n),..%SQLMissing($lg(%n,11)) do:$g(%d(12))="" ..%SQLnBuild():'$d(%n),..%SQLMissing($lg(%n,13)) do:$g(%d(13))="" ..%SQLnBuild():'$d(%n),..%SQLMissing($lg(%n,14)) 
+			quit:sqlcode<0		// A required field was missing
+		} while 0
+		if sqlcode<0 { set SQLCODE=sqlcode do ..%SQLEExit() RETURN "" }		// A constraint failed
+	}
+	if '$d(%d(1)) { set %d(1)=$i(^SEM.tblEmployeeD) } elseif %d(1)>$g(^SEM.tblEmployeeD) { if $i(^SEM.tblEmployeeD,$zabs(%d(1)-$g(^SEM.tblEmployeeD))) {}} elseif $d(^SEM.tblEmployeeD(%d(1))) { set SQLCODE=-119,%msg=$$FormatMessage^%occMessages(,"%SQL.Filer","SQLFiler33",,"ID1",%d(1),"SEM"_"."_"tblEmployee"_"."_"ID1") do ..%SQLEExit() RETURN "" }
+	set:'($d(%d(14))#2) %d(14)=""
+	if '$a(%check,2) {
+		new %ls lock +^SEM.tblEmployeeD(%d(1))#"E":$zu(115,4) set %ls=$s('$t:0,1:$case($SYSTEM.Lock.ReturnCode(),0:1,4:2,2:2,1:3,:""))
+		set:%ls=2 $e(%check,2)=$c(1) set:%ls=2&&($tlevel) %0CacheLock("SEM.tblEmployee","E")=1 set:$case(%ls,1:1,2:1,:0) $e(%l)=$c(1)
+		if '%ls||(%ls=3) { set SQLCODE=-110,%msg=$$FormatMessage^%occMessages(,"%SQL.Filer",$s('%ls:"SQLFiler40",1:"SQLFiler55"),,%oper,"SEM"_"."_"tblEmployee",$g(%d(1))) do ..%SQLEExit() RETURN ""  }
+	}
+	set ^SEM.tblEmployeeD(%d(1))=$lb(%d(14),%d(5),%d(4),%d(7),%d(6),%d(11),%d(9),%d(2),%d(8),%d(3),%d(10),%d(12),%d(13))
+	lock:$a(%l) -^SEM.tblEmployeeD(%d(1))#"E"
+	TCOMMIT:%tstart&&($zu(115,1)=1)
+	set SQLCODE=0
+	QUIT %d(1) 			// %SQLInsert
+ERRORInsert	set $zt="",SQLCODE=-415,%msg=$s($g(%msg)'="":%msg_" -- ",1:"")_$$FormatMessage^%occMessages(,"%SQL.Filer","SQLFiler51",,%oper,"SEM"_"."_"tblEmployee",$ze)
+	if $ze["<FRAMESTACK>" { set %msg=$$FormatMessage^%occMessages(,"%SQL.Filer","SQLFiler52",,$ze,%oper,"SEM"_"."_"tblEmployee") do ##Class(%SYS.System).WriteToConsoleLog(%msg) if ($zu(67,10,$j)=1)||($zu(67,10,$j)=3) { write !,%msg h 3 } HALT  }
+	do ..%SQLEExit()
+	RETURN ""
+%SQLInvalid(pIcol,pVal) methodimpl {
+	set:$l($g(pVal))>40 pVal=$e(pVal,1,40)_"..." do:'$d(%n) ..%SQLnBuild() set %msg=$s($g(%msg)'="":%msg_$c(13,10),1:"")_$$FormatMessage^%occMessages(,"%SQL.Filer","SQLFiler37",,"SEM"_"."_"tblEmployee"_"."_$lg(%n,pIcol),$s($g(pVal)'="":$s(pVal="":"<NULL>",pVal=$c(0):"<EMPTY STRING>",1:"'"_pVal_"'"),1:"")),sqlcode=$s(%oper="INSERT":-104,1:-105)
+	QUIT sqlcode }
+%SQLMissing(fname) methodimpl
+	set sqlcode=-108,%msg=$$FormatMessage^%occMessages(,"%SQL.Filer","SQLFiler47",,fname,"SEM"_"."_"tblEmployee") quit
+%SQLNormalizeFields() methodimpl
+	set:$g(%d(13))'="" %d(13)=$$NormalizeField13(%d(13))
+	new %f for %f=10,12 { set:$g(%d(%f))'="" %d(%f)=$s(%d(%f)="":"",1:%d(%f)\1) }
+	for %f=5,11 { set:$g(%d(%f))'="" %d(%f)=$select(%d(%f)=$c(0)&&$zu(115,13):"",1:%d(%f)\1) }
+	QUIT
+NormalizeField13(%val) {	set tsval=$$ConvertDATETIMEToTIMESTAMP^%qarfunc(%val,"mdy")
+	RETURN:tsval=""||($zu(115,13)&&(tsval=$c(0))) ""
+	set intval=$zdatetimeh(tsval,3,1,,,,,-672045,,"") RETURN:intval="" "error"
+	RETURN $zdatetime(intval,3,1,+$l($p(tsval,".",2)),,,,,-672045)
+}
+	Return
+%SQLPurgeIndices(pIndices="",pLockExtent=0,pIgnoreIndexList="") methodimpl
+	RETURN ..%PurgeIndices(pIndices,pLockExtent,pIgnoreIndexList)
+%SQLQuickLoad(%rowid,%nolock=0,pkey=0,qq=0) methodimpl
+	// Get fields from row where SQLRowID=%rowid
+	new d,i,il,subs set:%nolock=2 %nolock=1
+	if %nolock=0 { if '..%SQLAcquireLock(%rowid) { set %qrc=114,%msg=$$FormatMessage^%occMessages(,"%SQL.Filer","SQLFiler45",,"SEM"_"."_"tblEmployee",%rowid),%ROWCOUNT=0 QUIT  } set:$zu(115,2) il=$zu(115,2,0) }
+	new s,ul set ul=0,d(1)=%rowid if $zu(115,2)=1 { lock +^SEM.tblEmployeeD(d(1))#"S":$zu(115,4) if $t { set ul=1 } else { set %qrc=114,%msg=$$FormatMessage^%occMessages(,"%SQL.Filer","SQLFiler46",,"SEM"_"."_"tblEmployee",%rowid),%ROWCOUNT=0 quit  } }
+	if '$d(^SEM.tblEmployeeD(d(1)),s) { set SQLCODE=100,%qrc=100 if %nolock=0 { do:$g(il) $zu(115,2,il) }} else { set SQLCODE=0
+	if qq { set d(14)=$lg(s) if d(14)'="" { new sn set sn=$p(d(14),$e(d(14)),$l(d(14),$e(d(14)))-1) if "SEM.tblEmployee"'=sn { if %nolock=0 { do ..%SQLReleaseLock(%rowid,0,1) do:$g(il) $zu(115,2,il) } kill d set:sn'["." sn="User."_sn do $classmethod(sn,"%SQLQuickLoad",%rowid,%nolock,0,1) QUIT  }}}
+	set d(2)=$lg(s,8) set d(3)=$lg(s,10) set d(4)=$lg(s,3) set d(5)=$lg(s,2) set d(6)=$lg(s,5) set d(7)=$lg(s,4) set d(8)=$lg(s,9) set d(9)=$lg(s,7) set d(10)=$lg(s,11) set d(11)=$lg(s,6) set d(12)=$lg(s,12) set d(13)=$lg(s,13) set d(14)=$lg(s)  }
+	do ..%SQLQuickLogicalToOdbc(.d)
+	if SQLCODE set %ROWCOUNT=0 set:SQLCODE<0 SQLCODE=-SQLCODE lock:ul -^SEM.tblEmployeeD(d(1))#"SI" set %qrc=SQLCODE QUIT
+	set:qq d=$zobjexport("SEM.tblEmployee",18),d=14,d=$zobjexport(d,18) set i=-1 for  { set i=$o(d(i)) quit:i=""  set d=$zobjexport(d(i),18) } set %qrc=0,%ROWCOUNT=1 lock:ul -^SEM.tblEmployeeD(d(1))#"SI" if %nolock=0 { do ..%SQLReleaseLock(%rowid,0,0) do:$g(il) $zu(115,2,il) } QUIT
+	Return
+%SQLReleaseLock(%rowid,s=0,i=0,e="") methodimpl
+	new %d
+	set:e="" e=1 set %d(1)=%rowid set s=$e("E",e)_$e("S",s)_$e("D",i)
+	lock -^SEM.tblEmployeeD(%d(1))#s
+	QUIT
+%SQLReleaseTableLock(s=0,i=0) methodimpl
+	set s=$e("S",s)_$e("D",i) lock -^SEM.tblEmployeeD#s QUIT 1
+	Return
+%SQLUnlock() methodimpl
+	lock:$a(%l) -^SEM.tblEmployeeD(%d(1))#"E"
+	QUIT
+%SQLUnlockError(cname) methodimpl
+	set sqlcode=-110 if %oper="DELETE" { set %msg=$$FormatMessage^%occMessages(,"%SQL.Filer","SQLFiler48",,"SEM"_"."_"tblEmployee",cname) } else { set %msg=$$FormatMessage^%occMessages(,"%SQL.Filer","SQLFiler49",,"SEM"_"."_"tblEmployee",cname) } quit
+	Return
+%SQLUpdate(%rowid,%check,%d,%vco,%tstart=1,%mv=0,%polymorphic=0,%soid,%bufferedColumns=0,%bufferedColumnsDel=0) methodimpl
+	// SQL UPDATE method for table SEM.tblEmployee
+	new %e,bva,%ele,%itm,%key,%f,%l,%n,%nc,%oper,%pos,%s,icol,omcall,s,sn,sqlcode,subs,t set %oper="UPDATE",sqlcode=0,%ROWID=%rowid,$e(%e,1)=$c(0),%l=$c(0,0,0)
+	if '$d(%0CacheSQLRA) { new %0CacheSQLRA set omcall=1 }
+	if '$a(%check),'$a(%check,7),'..%SQLValidateFields(.sqlcode) { set SQLCODE=sqlcode QUIT  }
+	do:'$a(%check,8) ..%SQLNormalizeFields()
+	if $d(%d(1)),%d(1)'=%rowid { set SQLCODE=-107,%msg=$$FormatMessage^%occMessages(,"%SQL.Filer","SQLFiler16",,"ID1","SEM"_"."_"tblEmployee") QUIT  }
+	for icol=2:1:14 { set $e(%e,icol)=$c($d(%d(icol))) }
+	set %d(1)=%rowid,%e(1)=%rowid
+	if '$a(%check,2) {
+		new %ls lock +^SEM.tblEmployeeD(%d(1))#"E":$zu(115,4) set %ls=$s('$t:0,1:$case($SYSTEM.Lock.ReturnCode(),0:1,4:2,2:2,1:3,:""))
+		set:%ls=2 $e(%check,2)=$c(1) set:%ls=2&&($tlevel) %0CacheLock("SEM.tblEmployee","E")=1 set:$case(%ls,1:1,2:1,:0) $e(%l)=$c(1)
+		if '%ls||(%ls=3) { set SQLCODE=-110,%msg=$$FormatMessage^%occMessages(,"%SQL.Filer",$s('%ls:"SQLFiler40",1:"SQLFiler55"),,%oper,"SEM"_"."_"tblEmployee",$g(%d(1))) RETURN  }
+	}
+	if %tstart { TSTART:($zu(115,1)=1)||('$TLEVEL&&($zu(115,1)=2))  }
+	set $zt="ERRORUpdate"
+	if $g(%vco)="" { do ..%SQLGetOld(%rowid,.%d,.%e,.sqlcode) i sqlcode { s SQLCODE=-109,%msg=$$FormatMessage^%occMessages(,"%SQL.Filer","SQLFiler59",,"SEM"_"."_"tblEmployee",%rowid) do ..%SQLEExit() QUIT  } set:'$d(%d(14)) %d(14)=%e(14) set:%d(14)=%e(14) $e(%e,14)=$c(0) } else { do ..%SQLGetOldAll() if sqlcode { set SQLCODE=-109,%msg=$$FormatMessage^%occMessages(,"%SQL.Filer","SQLFiler59",,"SEM"_"."_"tblEmployee",%rowid) do ..%SQLEExit() QUIT  } for icol=2,3,4,5,6,7,8,9,10,11,12,13,14 { set:'$d(%d(icol)) %d(icol)=%e(icol) set:%d(icol)=%e(icol) $e(%e,icol)=$c(0) }}
+	if %e(14)'="" set sn=$p(%e(14),$e(%e(14)),$l(%e(14),$e(%e(14)))-1) if "SEM.tblEmployee"'=sn new %f do ..%SQLCopyIcolIntoName() do $classmethod(sn,"%SQLUpdate",%rowid,%check,.%d,$g(%vco),%tstart,%mv,1) QUIT
+	if '$a(%check) {
+		do {
+			if $g(%vco)'="" { d @%vco quit:sqlcode<0  }
+			if $a(%e,4),$g(%d(4))="" { do ..%SQLnBuild():'$d(%n),..%SQLMissing($lg(%n,5)) }
+			if $a(%e,5),$g(%d(5))="" { do ..%SQLnBuild():'$d(%n),..%SQLMissing($lg(%n,6)) }
+			if $a(%e,7),$g(%d(7))="" { do ..%SQLnBuild():'$d(%n),..%SQLMissing($lg(%n,8)) }
+			if $a(%e,10),$g(%d(10))="" { do ..%SQLnBuild():'$d(%n),..%SQLMissing($lg(%n,11)) }
+			if $a(%e,12),$g(%d(12))="" { do ..%SQLnBuild():'$d(%n),..%SQLMissing($lg(%n,13)) }
+			if $a(%e,13),$g(%d(13))="" { do ..%SQLnBuild():'$d(%n),..%SQLMissing($lg(%n,14)) }
+			quit:sqlcode
+		} while 0
+		if sqlcode { set SQLCODE=sqlcode do ..%SQLEExit() QUIT  }
+	}
+	if $s($a(%e,2):1,$a(%e,3):1,$a(%e,4):1,$a(%e,5):1,$a(%e,6):1,$a(%e,7):1,$a(%e,8):1,$a(%e,9):1,$a(%e,10):1,$a(%e,11):1,$a(%e,12):1,$a(%e,13):1,1:$a(%e,14)) {
+		set ^SEM.tblEmployeeD(%d(1))=$listupdate($g(^SEM.tblEmployeeD(%d(1))),1,$a(%e,14):%d(14),$a(%e,5):%d(5),$a(%e,4):%d(4),$a(%e,7):%d(7),$a(%e,6):%d(6),$a(%e,11):%d(11),$a(%e,9):%d(9),$a(%e,2):%d(2),$a(%e,8):%d(8),$a(%e,3):%d(3),$a(%e,10):%d(10),$a(%e,12):%d(12),$a(%e,13):%d(13))
+	}
+	do ..%SQLUnlock() TCOMMIT:%tstart&&($zu(115,1)=1)
+	set SQLCODE=0 kill:$g(omcall) %0CacheSQLRA
+	QUIT
+ERRORUpdate	set $zt="",SQLCODE=-415,%msg=$s($g(%msg)'="":%msg_" -- ",1:"")_$$FormatMessage^%occMessages(,"%SQL.Filer","SQLFiler51",,%oper,"SEM"_"."_"tblEmployee",$ze) if $ze["<FRAMESTACK>" { set %msg=$$FormatMessage^%occMessages(,"%SQL.Filer","SQLFiler52",,$ze,%oper,"SEM"_"."_"tblEmployee") do ##Class(%SYS.System).WriteToConsoleLog(%msg) if ($zu(67,10,$j)=1)||($zu(67,10,$j)=3) { write !,%msg h 3 } HALT  } do ..%SQLEExit() QUIT  
+	Return
+%SQLValidateCompFields(sqlcode) methodimpl
+	QUIT 'sqlcode
+%SQLValidateFields(sqlcode) methodimpl
+	if $g(%d(10))'="",'($$ValidateField10(%d(10))) { set sqlcode=..%SQLInvalid(10+1,%d(10)) } 
+	if $g(%d(12))'="",'($$ValidateField12(%d(12))) { set sqlcode=..%SQLInvalid(12+1,%d(12)) } 
+	if $g(%d(13))'="",'($$ValidateField13(%d(13))) { set sqlcode=..%SQLInvalid(13+1,%d(13)) } 
+	new %f for %f=5,11 { if $g(%d(%f))'="",'($select(%d(%f)=$c(0)&&$zu(115,13):1,$isvalidnum(%d(%f),0):1,1:$$Error^%apiOBJ(7207,%d(%f)))) set sqlcode=..%SQLInvalid(%f+1,$g(%d(%f))) quit  } 
+	if $g(%d(2))'="",'(($l(%d(2))'>1024)) { set sqlcode=..%SQLInvalid(2+1,%d(2)) } 
+	if $g(%d(8))'="",'(($l(%d(8))'>13)) { set sqlcode=..%SQLInvalid(8+1,%d(8)) } 
+	if $g(%d(4))'="",'(($l(%d(4))'>5)) { set sqlcode=..%SQLInvalid(4+1,%d(4)) } 
+	for %f=3,6,7 { if $g(%d(%f))'="",'(($l(%d(%f))'>64)) set sqlcode=..%SQLInvalid(%f+1,$g(%d(%f))) quit  } 
+	if $g(%d(9))'="",'(($l(%d(9))'>8)) { set sqlcode=..%SQLInvalid(9+1,%d(9)) } 
+	QUIT 'sqlcode
+ValidateField10(%val="") {	Quit $case(%val,"":1,1:1,0:1,:$$Error^%apiOBJ(7206,%val))
+}
+ValidateField12(%val="") {	Quit $case(%val,"":1,1:1,0:1,:$$Error^%apiOBJ(7206,%val))
+}
+ValidateField13(%val) {	set tsval=$$ConvertDATETIMEToTIMESTAMP^%qarfunc(%val,"mdy")
+	RETURN:($length(tsval)<19||($zdatetimeh(tsval,3,,,,,,0,,"")="")) $$Error^%apiOBJ(7214,%val_" ("_tsval_")")
+	RETURN 1
+}
+	Return
+%SQLnBuild() methodimpl {
+	set %n=$lb(,"ID1","Address","Department","EmployeeId","ID","KanaName","Name","PhoneNumber","PostCode","RetireFlg","Sex","deleteFlg","upDateTime","x__classname")
+	QUIT }
+%SaveData(id) methodimpl {
+	try {
+		set id=$listget(i%"%%OID") if id'="" { set insert=0,idassigned=1 } else { set insert=1,idassigned=0 }
+		set lock=0,lockok=0,tSharedLock=0
+		if 'idassigned { set id=$i(^SEM.tblEmployeeD) do ..%IdSet(id) set:$g(%objtxSTATUS)=2 %objtxOIDASSIGNED(+$this)="" }
+		try {
+			set tInnerException = ""
+			;
+			if 'insert {
+				if (i%%Concurrency<4)&&(i%%Concurrency) { lock +(^SEM.tblEmployeeD(id)#"E"):$zu(115,4) set lockok=$s('$t:0,1:$case($SYSTEM.Lock.ReturnCode(),0:1,2:2,4:2,:0)) set:lockok=2&&($tlevel) %0CacheLock($classname(),"E")=1 if lockok { set lock=1 } else { Throw ##class(%Exception.StatusException).ThrowIfInterrupt($$Error^%apiOBJ(5803,$classname())) } }
+				if ('$Data(^SEM.tblEmployeeD(id))) {
+					set insert=1
+					if lock { lock -(^SEM.tblEmployeeD(id)#"E") set (lock,lockok) = 0 }
+				}
+			}
+			if insert {
+				if ('lockok&&..%Concurrency&&$tlevel)||(i%%Concurrency=4) {  lock +(^SEM.tblEmployeeD(id)#"E"):$zu(115,4) set lockok=$s('$t:0,1:$case($SYSTEM.Lock.ReturnCode(),0:1,2:2,4:2,:0)) set:(lockok=2&&(i%%Concurrency'=4)) %0CacheLock($classname(),"E")=1 set:lockok lock=1 if 'lockok { Throw ##class(%Exception.StatusException).ThrowIfInterrupt($$Error^%apiOBJ(5803,$classname())) } }
+				if i%%Concurrency=3 { lock +(^SEM.tblEmployeeD(id)#"ES") set tSharedLock=1 }
+				set ^SEM.tblEmployeeD(id)=$lb("",i%ID,i%EmployeeId,i%Name,i%KanaName,i%Sex,i%PostCode,i%Address,i%PhoneNumber,i%Department,i%RetireFlg,i%deleteFlg,i%upDateTime)
+			}
+			else {
+				set ^SEM.tblEmployeeD(id)=$lb("",i%ID,i%EmployeeId,i%Name,i%KanaName,i%Sex,i%PostCode,i%Address,i%PhoneNumber,i%Department,i%RetireFlg,i%deleteFlg,i%upDateTime)
+			}
+			set tStatus = 1
+		}
+		catch tInnerException {
+			if ('idassigned) { Set $zobjoid("",$listget(i%"%%OID"))="",i%"%%OID"="" kill:$g(%objtxSTATUS)=2 %objtxOIDASSIGNED(+$this) }
+			if (tSharedLock) {  lock -(^SEM.tblEmployeeD(id)#"ES") } elseif (lockok=1)&&(insert)&&(i%%Concurrency=4) {  lock -(^SEM.tblEmployeeD(id)) }
+		}
+		if lock lock -(^SEM.tblEmployeeD(id)#"E")
+		if $Isobject(tInnerException) { throw tInnerException }
+	}
+	catch tException {
+		set tStatus = tException.AsStatus()
+	}
+	quit tStatus }
+%SaveDirect(id="",idList="",data,concurrency=-1) methodimpl {
+	try {
+		if concurrency=-1 { set concurrency=$zu(115,10) }
+		if id'="" { set insert=0,idassigned=1 } else { set insert=1,idassigned=0 }
+		set lock=0,tSharedLock=0
+		if 'idassigned { set id=$i(^SEM.tblEmployeeD) }
+		try {
+			set tInnerException = ""
+			;
+			if 'insert {
+				if concurrency { lock +(^SEM.tblEmployeeD(id)#"E"):$zu(115,4) set lock=$s('$t:0,1:$case($SYSTEM.Lock.ReturnCode(),0:1,2:2,4:2,:0)) set:lock=2&&($tlevel) %0CacheLock($classname(),"E")=1 if 'lock { Throw ##class(%Exception.StatusException).ThrowIfInterrupt($$Error^%apiOBJ(5803,$classname())) } }
+				if ('$Data(^SEM.tblEmployeeD(id))) {
+					set insert=1
+					if lock { lock -(^SEM.tblEmployeeD(id)#"E") set (lock,lockok) = 0 }
+				}
+			}
+			if insert {
+				if concurrency { lock +(^SEM.tblEmployeeD(id)#"E"):$zu(115,4) set lock=$s('$t:0,1:$case($SYSTEM.Lock.ReturnCode(),0:1,2:2,4:2,:0)) set:lock=2&&($tlevel) %0CacheLock($classname(),"E")=1 if 'lock { Throw ##class(%Exception.StatusException).ThrowIfInterrupt($$Error^%apiOBJ(5803,$classname())) } }
+				set ^SEM.tblEmployeeD(id)=data
+			}
+			else {
+				set ^SEM.tblEmployeeD(id)=data
+			}
+			set tStatus = 1
+		}
+		catch tInnerException {
+		}
+		if lock lock -(^SEM.tblEmployeeD(id)#"E")
+		if $Isobject(tInnerException) { throw tInnerException }
+	}
+	catch tException {
+		set tStatus = tException.AsStatus()
+	}
+	quit tStatus }
+%SaveIndices(pStartId="",pEndId="",lockExtent=0) methodimpl {
+	Quit 1 }
+%SortBegin(idxlist="",excludeunique=0) methodimpl
+	Quit 1
+%SortEnd(idxlist="",commit=1,excludeunique=0) methodimpl {
+	Quit 1 }
+%UnlockExtent(shared=0,immediate=0) methodimpl {
+	If 'shared {
+		If 'immediate {
+			Lock -^SEM.tblEmployeeD
+			 Quit 1
+		}
+		Lock -^SEM.tblEmployeeD#"I"
+		Quit 1
+	}
+	If 'immediate {
+		Lock -^SEM.tblEmployeeD#"S"
+		Quit 1
+	}
+	Lock -^SEM.tblEmployeeD#"SI"
+	Quit 1 }
+%UnlockId(id,shared=0,immediate=0) methodimpl {
+	If 'shared {
+		If 'immediate {
+			Lock -(^SEM.tblEmployeeD(id)#"E")
+			Quit 1
+		}
+		Lock -(^SEM.tblEmployeeD(id)#"IE")
+		Quit 1
+	}
+	If 'immediate {
+		Lock -(^SEM.tblEmployeeD(id)#"SE")
+		Quit 1
+	}
+	Lock -(^SEM.tblEmployeeD(id)#"SIE")
+	Quit 1 }
+%ValidateIndices(idxList="",autoCorrect=0,lockOption=1,multiProcess=1,mapList,verbose=1,errors) methodimpl
+	w !,"There are no indices to validate for class 'SEM.tblEmployee'"
+	QUIT 1
+%ValidateObject(unused=0,checkserial=1) methodimpl {
+	set sc=1
+	If '$system.CLS.GetModified() Quit sc
+	If m%Address Set iv=..Address If iv'="" Set rc=(..AddressIsValid(iv)) If ('rc) Set sc=$$EmbedErr^%occSystem(sc,rc,5802,"Address",iv)
+	If m%Department Set iv=..Department If iv'="" Set rc=(..DepartmentIsValid(iv)) If ('rc) Set sc=$$EmbedErr^%occSystem(sc,rc,5802,"Department",iv)
+	Set iv=..EmployeeId If iv="" Set rc=$$Error^%apiOBJ(5659,$classname()_"::EmployeeId("_$this_",ID="_..%Id()_")"),sc=$select(+sc:rc,1:$$AppendStatus^%occSystem(sc,rc))
+	If m%EmployeeId Set rc=(..EmployeeIdIsValid(iv)) If ('rc) Set sc=$$EmbedErr^%occSystem(sc,rc,5802,"EmployeeId",iv)
+	Set iv=..ID If iv="" Set rc=$$Error^%apiOBJ(5659,$classname()_"::ID("_$this_",ID="_..%Id()_")"),sc=$select(+sc:rc,1:$$AppendStatus^%occSystem(sc,rc))
+	If m%ID Set rc=(..IDIsValid(iv)) If ('rc) Set sc=$$EmbedErr^%occSystem(sc,rc,5802,"ID",iv)
+	If m%KanaName Set iv=..KanaName If iv'="" Set rc=(..KanaNameIsValid(iv)) If ('rc) Set sc=$$EmbedErr^%occSystem(sc,rc,5802,"KanaName",iv)
+	Set iv=..Name If iv="" Set rc=$$Error^%apiOBJ(5659,$classname()_"::Name("_$this_",ID="_..%Id()_")"),sc=$select(+sc:rc,1:$$AppendStatus^%occSystem(sc,rc))
+	If m%Name Set rc=(..NameIsValid(iv)) If ('rc) Set sc=$$EmbedErr^%occSystem(sc,rc,5802,"Name",iv)
+	If m%PhoneNumber Set iv=..PhoneNumber If iv'="" Set rc=(..PhoneNumberIsValid(iv)) If ('rc) Set sc=$$EmbedErr^%occSystem(sc,rc,5802,"PhoneNumber",iv)
+	If m%PostCode Set iv=..PostCode If iv'="" Set rc=(..PostCodeIsValid(iv)) If ('rc) Set sc=$$EmbedErr^%occSystem(sc,rc,5802,"PostCode",iv)
+	Set iv=..RetireFlg If iv="" Set rc=$$Error^%apiOBJ(5659,$classname()_"::RetireFlg("_$this_",ID="_..%Id()_")"),sc=$select(+sc:rc,1:$$AppendStatus^%occSystem(sc,rc))
+	If m%RetireFlg Set rc=(..RetireFlgIsValid(iv)) If ('rc) Set sc=$$EmbedErr^%occSystem(sc,rc,5802,"RetireFlg",iv)
+	If m%Sex Set iv=..Sex If iv'="" Set rc=(..SexIsValid(iv)) If ('rc) Set sc=$$EmbedErr^%occSystem(sc,rc,5802,"Sex",iv)
+	Set iv=..deleteFlg If iv="" Set rc=$$Error^%apiOBJ(5659,$classname()_"::deleteFlg("_$this_",ID="_..%Id()_")"),sc=$select(+sc:rc,1:$$AppendStatus^%occSystem(sc,rc))
+	If m%deleteFlg Set rc=(..deleteFlgIsValid(iv)) If ('rc) Set sc=$$EmbedErr^%occSystem(sc,rc,5802,"deleteFlg",iv)
+	Set iv=..upDateTime If iv="" Set rc=$$Error^%apiOBJ(5659,$classname()_"::upDateTime("_$this_",ID="_..%Id()_")"),sc=$select(+sc:rc,1:$$AppendStatus^%occSystem(sc,rc))
+	If m%upDateTime Set rc=(..upDateTimeIsValid(iv)) If ('rc) Set sc=$$EmbedErr^%occSystem(sc,rc,5802,"upDateTime",iv)
+	Quit sc }
+AddressGetStored(id) methodimpl {
+	Quit $Select(id'="":$listget($g(^SEM.tblEmployeeD(id)),8),1:"") }
+DepartmentGetStored(id) methodimpl {
+	Quit $Select(id'="":$listget($g(^SEM.tblEmployeeD(id)),10),1:"") }
+EmployeeIdGetStored(id) methodimpl {
+	Quit $Select(id'="":$listget($g(^SEM.tblEmployeeD(id)),3),1:"") }
+IDDisplayToLogical(%val) methodimpl {
+	Q $select(%val="":"",%val=$c(0)&&$zu(115,13):"",1:$s($in(%val,"","")'="":+$in(%val,"",%val),1:%val)) }
+IDGetStored(id) methodimpl {
+	Quit $Select(id'="":$listget($g(^SEM.tblEmployeeD(id)),2),1:"") }
+IDIsValid(%val) methodimpl {
+	Quit $select(%val=$c(0)&&$zu(115,13):1,$isvalidnum(%val,0):1,1:$$Error^%apiOBJ(7207,%val)) }
+IDNormalize(%val) methodimpl {
+	Quit $select(%val=$c(0)&&$zu(115,13):"",1:%val\1) }
+KanaNameGetStored(id) methodimpl {
+	Quit $Select(id'="":$listget($g(^SEM.tblEmployeeD(id)),5),1:"") }
+NameGetStored(id) methodimpl {
+	Quit $Select(id'="":$listget($g(^SEM.tblEmployeeD(id)),4),1:"") }
+PhoneNumberGetStored(id) methodimpl {
+	Quit $Select(id'="":$listget($g(^SEM.tblEmployeeD(id)),9),1:"") }
+PostCodeGetStored(id) methodimpl {
+	Quit $Select(id'="":$listget($g(^SEM.tblEmployeeD(id)),7),1:"") }
+RetireFlgDisplayToLogical(%val) methodimpl {
+	Quit $s(%val="":"",1:''%val) }
+RetireFlgGetStored(id) methodimpl {
+	Quit $Select(id'="":$listget($g(^SEM.tblEmployeeD(id)),11),1:"") }
+RetireFlgIsValid(%val="") methodimpl {
+	Quit $case(%val,"":1,1:1,0:1,:$$Error^%apiOBJ(7206,%val)) }
+RetireFlgNormalize(%val) methodimpl {
+	Quit $s(%val="":"",1:%val\1) }
+SexGetStored(id) methodimpl {
+	Quit $Select(id'="":$listget($g(^SEM.tblEmployeeD(id)),6),1:"") }
+deleteFlgGetStored(id) methodimpl {
+	Quit $Select(id'="":$listget($g(^SEM.tblEmployeeD(id)),12),1:"") }
+upDateTimeDisplayToLogical(%val) methodimpl {
+	quit $$ConvertDATETIMEToTIMESTAMP^%qarfunc(%val,"mdy") }
+upDateTimeGetStored(id) methodimpl {
+	Quit $Select(id'="":$listget($g(^SEM.tblEmployeeD(id)),13),1:"") }
+upDateTimeIsValid(%val) methodimpl {
+	set tsval=$$ConvertDATETIMEToTIMESTAMP^%qarfunc(%val,"mdy")
+	RETURN:($length(tsval)<19||($zdatetimeh(tsval,3,,,,,,0,,"")="")) $$Error^%apiOBJ(7214,%val_" ("_tsval_")")
+	RETURN 1 }
+upDateTimeNormalize(%val) methodimpl {
+	set tsval=$$ConvertDATETIMEToTIMESTAMP^%qarfunc(%val,"mdy")
+	RETURN:tsval=""||($zu(115,13)&&(tsval=$c(0))) ""
+	set intval=$zdatetimeh(tsval,3,1,,,,,-672045,,"") RETURN:intval="" "error"
+	RETURN $zdatetime(intval,3,1,+$l($p(tsval,".",2)),,,,,-672045) }
+upDateTimeOdbcToLogical(%val) methodimpl {
+	set %val=$$ConvertDATETIMEToTIMESTAMP^%qarfunc(%val,"mdy")
+	quit:%val="" "" if $zdth(%val,3,,,,,,,,"")'="" { s %val=$zdt($zdth(%val,3),3,,$l($p(%val,".",2))) } elseif $zdth(%val,-1,,,,,,,,"")'="" { s %val=$zdt($zdth(%val,-1),3,,$l($p(%val,".",2))) } quit $s(%val'[".":%val,1:$zstrip($zstrip(%val,">","0"),">",".")) }
+ExtentClose(%qHandle) [ SQLCODE ] methodimpl {
+	New SQLCODE Set SQLCODE=0
+	Do:$isobject($get(%qHandle)) %qHandle.%Destruct() Kill %qHandle
+	If SQLCODE { Set:$isobject($g(%sqlcontext)) %sqlcontext.%SQLCODE=SQLCODE,%sqlcontext.%Message=$g(%msg) Set sc=$$Error^%apiOBJ(5540,SQLCODE,$get(%msg)) } Else { Set sc=1 }
+	Quit sc }
+ExtentExecute(%qHandle) [ SQLCODE ] methodimpl { New %ROWCOUNT,%ROWID,%msg,SQLCODE 
+	Set sc=1
+	 ;---&sql(DECLARE QExtent CURSOR FOR
+ 	 ;---		 SELECT ID1 FROM %NOPARALLEL SEM.tblEmployee)
+ 	 ;--- ** SQL PUBLIC Variables: %ROWCOUNT, %ROWID, %msg, SQLCODE
+	 
+	 ;---&sql(OPEN QExtent)
+	if $g(%qHandle)'="" { s SQLCODE=-101 } else { try { s %qHandle="%sqlcq."_$tr($namespace,"%_-$@:/\[]^ .","pudssssssssss")_$case($zu(115,2),0:".u",1:".x",3:".v",:"."_$zu(115,2))_"EiLJpyqAfxY0vALqzQVldjusFS7",%qHandle=$classmethod(%qHandle,"%New") } catch { if ($ze'["<CLASS DOES NOT EXIST>"&&($ze'["<NOROUTINE>")||($ze'[%qHandle)),$ze'["<ZSQLU>" { throw } } if '$isobject(%qHandle) { s %qHandle=$$%0dsqlD() } }
+	If SQLCODE { Set:$isobject($g(%sqlcontext)) %sqlcontext.%SQLCODE=SQLCODE,%sqlcontext.%Message=$g(%msg) Set sc=$$Error^%apiOBJ(5821,"SQLCODE = "_SQLCODE_" %msg = "_$g(%msg)) } Else { Set sc=1 }
+	Quit sc }
+ExtentFetch(%qHandle,Row,AtEnd=0) [ SQLCODE ] methodimpl { New %ROWCOUNT,%ROWID,%msg,SQLCODE 
+	Set Row="",AtEnd=0
+	 ;---&sql(FETCH QExtent INTO :c1)
+ 	 ;--- ** SQL PUBLIC Variables: %ROWCOUNT, %ROWID, %msg, SQLCODE
+	if $isobject($g(%qHandle))'=1 { s SQLCODE=-102 } else { do %qHandle.FET() i SQLCODE=0 { s c1=%qHandle.sqlcol1 } }
+	If 'SQLCODE { Set Row=$lb(c1) Set sc=1 }
+	ElseIf SQLCODE=100 { Set AtEnd=1,sc=1 Set:$isobject($g(%sqlcontext)) %sqlcontext.%SQLCODE=SQLCODE,%sqlcontext.%ROWCOUNT=$g(%ROWCOUNT) }
+	Else { Set:$isobject($g(%sqlcontext)) %sqlcontext.%SQLCODE=SQLCODE,%sqlcontext.Message=$g(%msg) Set AtEnd=1,sc=$$Error^%apiOBJ(5540,SQLCODE,$get(%msg)) }
+	QUIT sc }
+ExtentFetchRows(%qHandle,FetchCount=0,RowSet,ReturnCount,AtEnd) [ SQLCODE ] methodimpl { New %ROWCOUNT,%ROWID,%msg,SQLCODE 
+	Set RowSet="",ReturnCount=0,AtEnd=0
+	For {
+		 ;---&sql(FETCH QExtent INTO :c1)
+ 		 ;--- ** SQL PUBLIC Variables: %ROWCOUNT, %ROWID, %msg, SQLCODE
+		if $isobject($g(%qHandle))'=1 { s SQLCODE=-102 } else { do %qHandle.FET() i SQLCODE=0 { s c1=%qHandle.sqlcol1 } }
+		If 'SQLCODE { Set RowSet=RowSet_$lb(c1),ReturnCount=ReturnCount+1 Quit:(ReturnCount=FetchCount)||(($l(RowSet)+($l(RowSet)\ReturnCount))>30000) } Else { Set AtEnd=1 Quit }
+	}
+	If 'SQLCODE { Set sc=1 } ElseIf SQLCODE=100 { Set sc=1 Set:$isobject($g(%sqlcontext)) %sqlcontext.%SQLCODE=SQLCODE,%sqlcontext.%ROWCOUNT=$g(%ROWCOUNT) } Else { Set:$isobject($g(%sqlcontext)) %sqlcontext.%SQLCODE=SQLCODE,%sqlcontext.Message=$g(%msg) Set sc=$$Error^%apiOBJ(5540,SQLCODE,$get(%msg)) }
+	Quit sc }
+ExtentSendODBC(%qHandle,array,qacn,%qrc,piece,ColumnCount) [ SQLCODE ] methodimpl { New %ROWCOUNT,%ROWID,%msg,SQLCODE 
+	set %qrc=0,piece=0
+	for {
+		set rc=..ExtentFetch(.%qHandle,.row,.atend)
+		if ('rc) { set %qrc=-400 set:$isobject($get(%sqlcontext)) %sqlcontext.SQLCode=-400,%sqlcontext.Message=$g(%msg) do ProcessError^%ourProcedure(rc,$get(%sqlcontext),.%qrc,.%msg),Logerr^%SYS.SQLSRV(%qrc,"","SP",.%msg) RETURN  }
+		if row="" { set %qrc=100 set:$isobject($get(%sqlcontext)) %sqlcontext.SQLCode=100 RETURN  }
+		RETURN:$zobjexport(row,60)
+	}
+	RETURN }
+ q
+%0dsqlD()	n %xxsql,%xxoref
+	s %xxsql("S",1)="DECLARE QExtent CURSOR FOR SELECT ID1 "
+	s %xxsql("S",2)="INTO  :i%sqlcol1"
+	s %xxsql("S",3)="FROM %NOPARALLEL SEM . tblEmployee"
+	s %xxsql("M","%occSqlfuncinc")=$c(1),%xxsql("M","ALLOCGVEC")=$c(1),%xxsql("M","CACHENAMES")="",%xxsql("M","FORKNETDMN")=$c(1)
+	s %xxsql("M","HASHLOCK")=$c(1),%xxsql("M","NETNEWHASH")=$c(1),%xxsql("M","USEDIRCACHE")=$c(1),%xxsql("M","USEGCNT")=2,%xxsql("M","USEGOFF")=$c(1)
+	s %xxsql("M","USELOST")=$c(1),%xxsql("M","ZVERSION")=$c(1),%xxsql("I","%occSqlfunc")="",%xxsql("I","%sySystem")="",%xxsql("I","%systemInclude")=""
+	s %xxsql("NS")="SEM",%xxsql("PToolsCTI")=$LB(,"-1:0:0::0:1")
+	s %xxoref=$$BuildQuery^%SYS.SQLSRV(.%xxsql,$lb("Runtime","","","SEM",0,"",),",1,QExtent,","SEM.tblEmployee.CLS",1)
+	q %xxoref
+ExtentFunc() methodimpl {
+	try {
+		set tSchemaPath = ##class(%SQL.Statement).%ClassPath($classname())
+			set tStatement = ##class(%SQL.Statement).%New(,tSchemaPath)
+			do tStatement.prepare(" SELECT ID1 FROM %NOPARALLEL SEM . tblEmployee /*#OPTIONS {""DynamicSQL"":1} */")
+		set tResult = tStatement.%Execute()
+	}
+	catch tException { if '$Isobject($Get(tResult)) { set tResult = ##class(%SQL.StatementResult).%New() } set tResult.%SQLCODE=tException.AsSQLCODE(),tResult.%Message=tException.AsSQLMessage() }
+	Quit tResult }
+ExtentGetInfo(colinfo,parminfo,idinfo,%qHandle,extoption=0,extinfo) methodimpl {
+ s parminfo=""
+	s:'($d(^oddCOM($classname(),"q","Extent",21),clientinfo)#2)&&'$s($d(^(2),clientinfo)#2&&(clientinfo'=$classname()):$d(^oddCOM(clientinfo,"q","Extent",21),clientinfo)#2||($d(^oddDEF(clientinfo,"q","Extent",21),clientinfo)#2),1:$d(^oddDEF($classname(),"q","Extent",21),clientinfo)#2) clientinfo=""
+	Set:extoption extinfo=$s($d(^oddCOM($classname(),"q","Extent",38))#2:^(38),$d(^oddCOM($g(^(2),$classname()),"q","Extent",38))#2:^(38),1:$s($d(^oddDEF($g(^oddCOM($classname(),"q","Extent",2),$classname()),"q","Extent",38))#2:^(38),1:""))
+	If clientinfo'="" Set colinfo=$listget(clientinfo,1),parminfo=$listget(clientinfo,2),idinfo=$listget(clientinfo,3) Quit 1
+	Set colinfo="",parminfo="",idinfo=$listbuild(0)
+	Set sc=$$externaltype^%apiOLE("%Library.Integer",.exttypes,"0")
+	Quit:('sc) sc
+	s:'($d(^oddCOM($classname(),"q","Extent",23),names)#2)&&'$s($d(^(2),names)#2&&(names'=$classname()):$d(^oddCOM(names,"q","Extent",23),names)#2||($d(^oddDEF(names,"q","Extent",23),names)#2),1:$d(^oddDEF($classname(),"q","Extent",23),names)#2) names=""
+	s:'($d(^oddCOM($classname(),"q","Extent",22),captions)#2)&&'$s($d(^(2),captions)#2&&(captions'=$classname()):$d(^oddCOM(captions,"q","Extent",22),captions)#2||($d(^oddDEF(captions,"q","Extent",22),captions)#2),1:$d(^oddDEF($classname(),"q","Extent",22),captions)#2) captions=""
+	For i=1:1:1 Set colinfo=colinfo_$listbuild($listbuild($listget(names,i),$piece(exttypes,",",i),$listget(captions,i)))
+	Set idinfo=$listbuild(1,$classname())
+	s ^oddCOM($classname(),"q","Extent",21)=$listbuild(colinfo,parminfo,idinfo)
+	Quit 1 }
+zExtentGetODBCInfo(colinfo,parminfo,qHandle) methodimpl
+	Set metadata=$lb(1,1,"ID",4,10,0,2,"ID","tblEmployee","SEM","",$c(0,0,0,0,0,0,0,0,0,0,0,1,0),0)
+	Set colcount=$li(metadata,2),cmdlen=colcount*10,parmcount=$li(metadata,3+cmdlen),pmdlen=parmcount*6,parminfo=$li(metadata,cmdlen+3,cmdlen+pmdlen+3)
+	Set colinfo=$li(metadata,2,2+cmdlen)
+	Quit 1
+IDKEYCheck(K1,lockonly=0,concurrency=-1) methodimpl {
+	s id=K1,exists=..%ExistsId(id) q:'exists $s('lockonly:$$Error^%apiOBJ(5797,$classname(),"IDKEY",id),1:1) s:concurrency=-1 concurrency=$select(..#DEFAULTCONCURRENCY="$zu(115,10)":$zu(115,10),1:$xecute("q "_..#DEFAULTCONCURRENCY)) if concurrency { s status=..%LockId(id,1) q:('status) status } if 'lockonly { s exists=..%ExistsId(id) d:concurrency ..%UnlockId(id,1,0) quit $s('exists:$$Error^%apiOBJ(5797,$classname(),"IDKEY",id),1:1) } else { d:concurrency ..%UnlockId(id,1,0) q 1 }
+}
+IDKEYDelete(K1,concurrency=-1) methodimpl {
+	Quit ..%DeleteId(.K1,concurrency) }
+IDKEYExists(K1,id="") methodimpl {
+	s id=K1 q ..%ExistsId(K1) }
+IDKEYOpen(K1,concurrency=-1,sc) methodimpl { s:'($d(sc)#2) sc=1
+	Quit ..%OpenId(.K1,concurrency,.sc) }
+zIDKEYSQLCheckUnique(pFromOrig=0,%pID,%pVals...) methodimpl
+ QUIT $$Error^%apiOBJ(5758,"%Persistent::IDKEYSQLCheckUnique")
+zIDKEYSQLExists(pLockOnly=0,pUnlockRef,%pVal...) methodimpl
+	// SQL Foreign Key validation entry point for Key IDKEY.  Called by FKeys that reference this Key to see if the row is defined
+	if pLockOnly>=0 { new id set id=%pVal(1) }
+	if pLockOnly>=0 { if '..%SQLGetLock(id,1,.pUnlockRef) { set sqlcode=-114,%msg=$$FormatMessage^%occMessages(,"%SQL.Filer","SQLFiler39",,"SEM"_"."_"tblEmployee"_":"_"IDKEY") QUIT 0 } }
+	if pLockOnly<1 {
+		new qv set qv=$d(^SEM.tblEmployeeD(%pVal(1))) QUIT:pLockOnly=-1 qv
+		do:'$g(pUnlockRef) ..%SQLReleaseLock(id,1) quit qv
+	}
+	else { do:'$g(pUnlockRef) ..%SQLReleaseLock(id,1) QUIT 1 }
+	Return
+zIDKEYSQLFindPKeyByConstraint(%con) methodimpl
+ QUIT $$Error^%apiOBJ(5758,"%Persistent::IDKEYSQLFindPKeyByConstraint")
+zIDKEYSQLFindRowIDByConstraint(%con,pInternal=0) methodimpl
+ QUIT $$Error^%apiOBJ(5758,"%Persistent::IDKEYSQLFindRowIDByConstraint")
+%sqllistUCQ(t) public	{
+	s t("%0dsqlA")="",t("%0dsqlD")=""
+}
