@@ -23,6 +23,10 @@ Property deleteFlg As %Boolean [ Required ];
 
 Property upDateTime As %DateTime [ Required ];
 
+/// INDEX on EmployeeId for fast MAX() queries
+/// IMPORTANT: This improves performance when auto-generating Employee IDs
+Index EmployeeIdIdx On EmployeeId;
+
 Storage Default
 {
 <Data name="tblEmployeeDefaultData">
