@@ -15,6 +15,8 @@ Property Address As %String(MAXLEN = 1024);
 
 Property PhoneNumber As %String(MAXLEN = 13);
 
+Property Email As %String(MAXLEN = 100);
+
 Property Department As %String(MAXLEN = 64);
 
 Property RetireFlg As %Boolean [ Required ];
@@ -22,10 +24,6 @@ Property RetireFlg As %Boolean [ Required ];
 Property deleteFlg As %Boolean [ Required ];
 
 Property upDateTime As %DateTime [ Required ];
-
-/// INDEX on EmployeeId for fast MAX() queries
-/// IMPORTANT: This improves performance when auto-generating Employee IDs
-Index EmployeeIdIdx On EmployeeId;
 
 Storage Default
 {
@@ -58,15 +56,18 @@ Storage Default
 <Value>PhoneNumber</Value>
 </Value>
 <Value name="10">
-<Value>Department</Value>
+<Value>Email</Value>
 </Value>
 <Value name="11">
-<Value>RetireFlg</Value>
+<Value>Department</Value>
 </Value>
 <Value name="12">
-<Value>deleteFlg</Value>
+<Value>RetireFlg</Value>
 </Value>
 <Value name="13">
+<Value>deleteFlg</Value>
+</Value>
+<Value name="14">
 <Value>upDateTime</Value>
 </Value>
 </Data>

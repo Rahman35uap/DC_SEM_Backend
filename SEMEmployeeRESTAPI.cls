@@ -42,7 +42,7 @@ ClassMethod GetAllEmployees() As %Status
     Set result.employees = []
     
     Try {
-        Set sqlQuery = "SELECT ID, EmployeeId, Name, KanaName, Sex, PostCode, Address, PhoneNumber, Department, RetireFlg, upDateTime FROM SEM.tblEmployee WHERE deleteFlg = 0 ORDER BY upDateTime DESC"
+        Set sqlQuery = "SELECT ID, EmployeeId, Name, KanaName, Sex, PostCode, Address, PhoneNumber, Email, Department, RetireFlg, upDateTime FROM SEM.tblEmployee WHERE deleteFlg = 0 ORDER BY upDateTime DESC"
         Set statement = ##class(%SQL.Statement).%New()
         Set status = statement.%Prepare(sqlQuery)
         
@@ -64,6 +64,7 @@ ClassMethod GetAllEmployees() As %Status
             Set employee.PostCode = resultSet.%Get("PostCode")
             Set employee.Address = resultSet.%Get("Address")
             Set employee.PhoneNumber = resultSet.%Get("PhoneNumber")
+            Set employee.Email = resultSet.%Get("Email")
             Set employee.Department = resultSet.%Get("Department")
             Set employee.RetireFlg = resultSet.%Get("RetireFlg")
             Set employee.upDateTime = resultSet.%Get("upDateTime")
@@ -112,6 +113,7 @@ ClassMethod GetEmployeeById(id As %String) As %Status
         Set result.postCode = employee.PostCode
         Set result.address = employee.Address
         Set result.phoneNumber = employee.PhoneNumber
+        Set result.email = employee.Email
         Set result.department = employee.Department
         Set result.retireFlg = employee.RetireFlg
         Set result.upDateTime = employee.upDateTime
@@ -233,6 +235,7 @@ ClassMethod CreateEmployee() As %Status
         Set newEmployee.PostCode = $ZCONVERT(..GetValueOrDefault(requestObject, "postCode", ""), "I", "UTF8")
         Set newEmployee.Address = $ZCONVERT(..GetValueOrDefault(requestObject, "address", ""), "I", "UTF8")
         Set newEmployee.PhoneNumber = $ZCONVERT(..GetValueOrDefault(requestObject, "phoneNumber", ""), "I", "UTF8")
+        Set newEmployee.Email = $ZCONVERT(..GetValueOrDefault(requestObject, "email", ""), "I", "UTF8")
         Set newEmployee.Department = $ZCONVERT(..GetValueOrDefault(requestObject, "department", ""), "I", "UTF8")
         Set newEmployee.RetireFlg = ..GetValueOrDefault(requestObject, "retireFlg", 0) // Numeric
         // --- END FIX ---
@@ -320,6 +323,9 @@ ClassMethod UpdateEmployee(id As %String) As %Status
         }
         If requestObject.%IsDefined("phoneNumber") {
             Set employee.PhoneNumber = $ZCONVERT(requestObject.phoneNumber, "I", "UTF8")
+        }
+        If requestObject.%IsDefined("email") {
+            Set employee.Email = $ZCONVERT(requestObject.email, "I", "UTF8")
         }
         If requestObject.%IsDefined("department") {
             Set employee.Department = $ZCONVERT(requestObject.department, "I", "UTF8")
